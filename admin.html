@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - GestiónTurno</title>
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=League+Spartan:wght@100..900&family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&family=Pacifico&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <!-- FullCalendar CSS -->
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css' rel='stylesheet' />
+    <!-- jQuery para los modales (puedes usar otro si prefieres) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-storage-compat.js"></script>
+</head>
+<body class="body-admin">
+    <div id="auth-container">
+        <button id="btn-admin-login" class="google-btn">
+            <svg class="google-icon" viewBox="0 0 24 24" width="18" height="18">
+            <path d="M12.545 10.239v3.821h5.445c-0.712 2.315-2.647 3.972-5.445 3.972-3.332 0-6.033-2.701-6.033-6.032s2.701-6.032 6.033-6.032c1.498 0 2.866 0.549 3.921 1.453l2.814-2.814c-1.784-1.664-4.152-2.675-6.735-2.675-5.522 0-10 4.479-10 10s4.478 10 10 10c8.396 0 10-7.496 10-10 0-0.671-0.068-1.325-0.182-1.977h-9.818z"/>
+            </svg>
+        </button>
+    </div>
+
+    <div id="admin-panel" class="admin-panel">
+        <div class="admin-header">
+            <h1 class="logo">Gestión<span>Admin</span></h1>
+
+            <div class="nav-admin">
+                <div class="nav-enlace-overlay"></div>
+
+                <div class="nav-enlace active">
+                    <span>
+                        <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="#020202"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        >
+                        <path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" />
+                        <path d="M16 3v4" />
+                        <path d="M8 3v4" />
+                        <path d="M4 11h16" />
+                        <path d="M7 14h.013" />
+                        <path d="M10.01 14h.005" />
+                        <path d="M13.01 14h.005" />
+                        <path d="M16.015 14h.005" />
+                        <path d="M13.015 17h.005" />
+                        <path d="M7.01 17h.005" />
+                        <path d="M10.01 17h.005" />
+                        </svg>
+                    </span>
+                    <span class="nav-enlace-texto">Calendario</span>
+                </div>
+    
+                <div class="nav-enlace">
+                    <span>
+                        <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="#020202"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        >
+                        <path d="M6.331 8h11.339a2 2 0 0 1 1.977 2.304l-1.255 8.152a3 3 0 0 1 -2.966 2.544h-6.852a3 3 0 0 1 -2.965 -2.544l-1.255 -8.152a2 2 0 0 1 1.977 -2.304z" />
+                        <path d="M9 11v-5a3 3 0 0 1 6 0v5" />
+                        </svg>
+                    </span>
+                    <span class="nav-enlace-texto">Servicios</span>
+                </div>
+    
+                <div class="nav-enlace">
+                    <span>
+                        <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="#020202"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        >
+                        <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+                        <path d="M6 21v-2a4 4 0 0 1 4 -4h.5" />
+                        <path d="M17.8 20.817l-2.172 1.138a.392 .392 0 0 1 -.568 -.41l.415 -2.411l-1.757 -1.707a.389 .389 0 0 1 .217 -.665l2.428 -.352l1.086 -2.193a.392 .392 0 0 1 .702 0l1.086 2.193l2.428 .352a.39 .39 0 0 1 .217 .665l-1.757 1.707l.414 2.41a.39 .39 0 0 1 -.567 .411l-2.172 -1.138z" />
+                        </svg>
+                    </span>
+                    <span class="nav-enlace-texto">Personal</span>
+                </div>
+            </div>
+
+            <button id="logout-btn" class="google-btn">
+                <span class="span-logout">
+                    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24" viewBox="0 0 48 48">
+                        <path fill="#fbc02d" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12	s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20	s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"></path><path fill="#e53935" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039	l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"></path><path fill="#4caf50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36	c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"></path><path fill="#1565c0" d="M43.611,20.083L43.595,20L42,20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571	c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"></path>
+                    </svg>
+                </span>
+                <span>Salir</span>
+            </button>
+        </div>
+        
+        <div class="container-cal-tur">
+            <div id="calendar-container">
+                <div id="calendar"></div>
+            </div>
+            
+            <div id="turnos-container" class="turnos-list">
+                <h2 id="fecha-titulo">Selecciona una fecha</h2>
+                <div id="turnos-list"></div>
+            </div>
+        </div>
+
+        <div class="admin-container_servicios admin-container">
+            <div class="admin-header admin-header-servicios">
+                <h2><span></span>Servicios</h2>
+                <button id="btn-agregar-servicio" class="btn-agregar">
+                    <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#020202"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    >
+                    <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+                    <path d="M13.5 6.5l4 4" />
+                    <path d="M16 19h6" />
+                    <path d="M19 16v6" />
+                    </svg>
+                    <span>Crear Servicio</span>
+                </button>
+            </div>
+
+            <div id="servicios-list" class="servicios-list admin-list">
+                <div class="categoria">
+                    <h2>Uñas</h2>
+                    <div class="servicios">
+                        <div class="servicio">
+                            <h3>Nombre del Servicio</h3>
+                            <p>
+                                <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="#3e843a"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                >
+                                <path d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 0 1 0 6h-4a3 3 0 0 1 -2.7 -2" />
+                                <path d="M12 3v3m0 12v3" />
+                                </svg>
+                                <span>15.000</span>
+                            </p>
+
+                            <p>
+                                <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="#667dc4"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                >
+                                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                                <path d="M12 12h3.5" />
+                                <path d="M12 7v5" />
+                                </svg>
+                                <span>60 min</span>
+                            </p>
+
+                            <p>
+                                <span>Activo:</span>
+                                <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="#35c522"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                >
+                                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                                <path d="M9 12l2 2l4 -4" />
+                                </svg>
+                            </p>
+                            
+                            <p>
+                                <span>Promo:</span>
+                                <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="#d71919"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                >
+                                <path d="M18 6l-12 12" />
+                                <path d="M6 6l12 12" />
+                                </svg>
+                            </p>
+
+                            <button id="btn-editar-servicio" class="btn-editar">
+                                <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="#020202"
+                                stroke-width="1.5"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                >
+                                <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                <path d="M16 5l3 3" />
+                                </svg>
+                            </button>
+
+                            <button id="btn-eliminar-servicio" class="btn-eliminar">
+                                <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="#020202"
+                                stroke-width="1.5"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                >
+                                <path d="M4 7l16 0" />
+                                <path d="M10 11l0 6" />
+                                <path d="M14 11l0 6" />
+                                <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div class="servicio">
+                            <h3>Nombre del Servicio</h3>
+                            <p>
+                                <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="#3e843a"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                >
+                                <path d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 0 1 0 6h-4a3 3 0 0 1 -2.7 -2" />
+                                <path d="M12 3v3m0 12v3" />
+                                </svg>
+                                <span>15.000</span>
+                            </p>
+
+                            <p>
+                                <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="#667dc4"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                >
+                                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                                <path d="M12 12h3.5" />
+                                <path d="M12 7v5" />
+                                </svg>
+                                <span>60 min</span>
+                            </p>
+
+                            <p>
+                                <span>Activo:</span>
+                                <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="#35c522"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                >
+                                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                                <path d="M9 12l2 2l4 -4" />
+                                </svg>
+                            </p>
+                            
+                            <p>
+                                <span>Promo:</span>
+                                <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="#d71919"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                >
+                                <path d="M18 6l-12 12" />
+                                <path d="M6 6l12 12" />
+                                </svg>
+                            </p>
+
+                            <button id="btn-editar-servicio" class="btn-editar">
+                                <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="#020202"
+                                stroke-width="1.5"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                >
+                                <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                <path d="M16 5l3 3" />
+                                </svg>
+                            </button>
+
+                            <button id="btn-eliminar-servicio" class="btn-eliminar">
+                                <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="#020202"
+                                stroke-width="1.5"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                >
+                                <path d="M4 7l16 0" />
+                                <path d="M10 11l0 6" />
+                                <path d="M14 11l0 6" />
+                                <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                </svg>
+                            </button>
+                        </div>
+                        <!-- Resto de Servicios -->
+                    </div>
+                </div>
+                <!-- Resto de Categorias -->
+            </div>
+        </div>
+
+        <div class="admin-container_personal admin-container">
+            <div class="admin-header admin-header-personal">
+                <h2><span></span>Personal</h2>
+
+                <button id="btn-agregar-personal" class="btn-agregar">
+                    <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#020202"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    >
+                    <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+                    <path d="M13.5 6.5l4 4" />
+                    <path d="M16 19h6" />
+                    <path d="M19 16v6" />
+                    </svg>
+                    <span>Agregar Personal</span>
+                </button>
+            </div>
+            
+            <div id="personal-list" class="personal-list admin-list">
+                <div class="personal">
+                    <div class="personal-identidad">
+                        <img src="" alt="Imagen del Empleado">
+                        <h3>Nombre del Empleado</h3>
+                    </div>
+
+                    <div class="personal-datos">
+                        <p>
+                            <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="#020202"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            >
+                            <path d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2" />
+                            </svg>
+                            <span>1122334455</span>
+                        </p>
+    
+                        <p>
+                            <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="#020202"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            >
+                            <path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" />
+                            <path d="M3 7l9 6l9 -6" />
+                            </svg>
+                            <span>empleado@email.com</span>
+                        </p>
+                    </div>
+
+                    <div class="personal-disponibilidad">
+                        <p>
+                            <span>Activo:</span>
+                            <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="#020202"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            >
+                            <path d="M5 12l5 5l10 -10" />
+                            </svg>
+                        </p>
+    
+                        <p>
+                            <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="#020202"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            >
+                            <path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" />
+                            <path d="M16 3v4" />
+                            <path d="M8 3v4" />
+                            <path d="M4 11h16" />
+                            <path d="M7 14h.013" />
+                            <path d="M10.01 14h.005" />
+                            <path d="M13.01 14h.005" />
+                            <path d="M16.015 14h.005" />
+                            <path d="M13.015 17h.005" />
+                            <path d="M7.01 17h.005" />
+                            <path d="M10.01 17h.005" />
+                            </svg>
+                            <span>L - M - M - J</span>
+                        </p>
+                    </div>
+
+                    <div class="acciones-personal">
+                        <button id="btn-editar-personal" class="btn-editar">
+                            <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="#020202"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            >
+                            <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                            <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                            <path d="M16 5l3 3" />
+                            </svg>
+                        </button>
+    
+                        <button id="btn-eliminar-personal" class="btn-eliminar">
+                            <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="#020202"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            >
+                            <path d="M4 7l16 0" />
+                            <path d="M10 11l0 6" />
+                            <path d="M14 11l0 6" />
+                            <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                            <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <!-- Resto del Personal -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para editar turno -->
+    <div id="modal-editar" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Editar Turno</h2>
+            <div id="turno-info"></div>
+            <form id="form-editar">
+                <input type="hidden" id="turno-id">
+                <div class="groups">
+                    <div class="form-group">
+                        <label for="edit-fecha">
+                            <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="#222222"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            >
+                            <path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" />
+                            <path d="M16 3v4" />
+                            <path d="M8 3v4" />
+                            <path d="M4 11h16" />
+                            <path d="M7 14h.013" />
+                            <path d="M10.01 14h.005" />
+                            <path d="M13.01 14h.005" />
+                            <path d="M16.015 14h.005" />
+                            <path d="M13.015 17h.005" />
+                            <path d="M7.01 17h.005" />
+                            <path d="M10.01 17h.005" />
+                            </svg>
+                        </label>
+                        <input type="date" id="edit-fecha" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-horario">
+                        <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="#222222"
+                        stroke-width= "1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        >
+                        <path d="M21 12a9 9 0 1 0 -9.002 9" />
+                        <path d="M19.001 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                        <path d="M19.001 15.5v1.5" />
+                        <path d="M19.001 21v1.5" />
+                        <path d="M22.032 17.25l-1.299 .75" />
+                        <path d="M17.27 20l-1.3 .75" />
+                        <path d="M15.97 17.25l1.3 .75" />
+                        <path d="M20.733 20l1.3 .75" />
+                        <path d="M12 7v5l2 2" />
+                        </svg>
+                        </label>
+                        <select id="edit-horario" required></select>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-guardar">
+                        <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="#5d9340"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        >
+                        <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                        <path d="M9 12l2 2l4 -4" />
+                        </svg>
+                        <span>Guardar Cambios</span>
+                    </button>
+                    <button type="button" class="btn-eliminar" id="btn-eliminar-modal">
+                        <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="#f44336"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        >
+                        <path d="M4 7l16 0" />
+                        <path d="M10 11l0 6" />
+                        <path d="M14 11l0 6" />
+                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                        </svg>
+                        <span>Eliminar Turno</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para Crear/Editar Servicio -->
+    <div id="modal-servicio" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 id="modal-servicio-titulo">Crear Servicio</h2>
+            <form id="form-servicio">
+                <input type="hidden" id="servicio-id">
+                
+                <div class="form-group">
+                    <label for="servicio-nombre">Nombre</label>
+                    <input type="text" id="servicio-nombre" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="servicio-categoria">Categoría</label>
+                    <select id="servicio-categoria" required>
+                        <!-- Obtener desde la base de datos -->
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="servicio-descripcion">Descripción</label>
+                    <textarea id="servicio-descripcion"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="servicio-duracion">Duración (minutos)</label>
+                    <input type="number" id="servicio-duracion" required min="30" step="30">
+                </div>
+                
+                <div class="form-group">
+                    <label for="servicio-precio">Precio</label>
+                    <input type="number" id="servicio-precio" required min="1000" step="500">
+                </div>
+                
+                <!-- <div class="form-group">
+                    <label for="servicio-orden">Orden</label>
+                    <input type="number" id="servicio-orden" required min="0">
+                </div> -->
+
+                <div class="servicio-checks">
+                    <div class="checkbox-wrapper-44 form-group form-group-checkbox">
+                        <label class="toggleButton" for="servicio-activo">
+                            Activo: 
+                            <input type="checkbox" id="servicio-activo" checked>
+                            <div>
+                                <svg viewBox="0 0 44 44">
+                                    <path d="M14,24 L21,31 L39.7428882,11.5937758 C35.2809627,6.53125861 30.0333333,4 24,4 C12.95,4 4,12.95 4,24 C4,35.05 12.95,44 24,44 C35.05,44 44,35.05 44,24 C44,19.3 42.5809627,15.1645919 39.7428882,11.5937758" transform="translate(-2.000000, -2.000000)"></path>
+                                </svg>
+                            </div>
+                        </label>
+                    </div>
+    
+                    <div class="checkbox-wrapper-44 form-group form-group-checkbox">
+                        <label class="toggleButton" for="servicio-promo">
+                            Promo: 
+                            <input type="checkbox" id="servicio-promo">
+                            <div>
+                                <svg viewBox="0 0 44 44">
+                                    <path d="M14,24 L21,31 L39.7428882,11.5937758 C35.2809627,6.53125861 30.0333333,4 24,4 C12.95,4 4,12.95 4,24 C4,35.05 12.95,44 24,44 C35.05,44 44,35.05 44,24 C44,19.3 42.5809627,15.1645919 39.7428882,11.5937758" transform="translate(-2.000000, -2.000000)"></path>
+                                </svg>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn-guardar">Guardar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para Crear/Editar Personal -->
+    <div id="modal-personal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 id="modal-personal-titulo">Crear Personal</h2>
+            <form id="form-personal">
+                <input type="hidden" id="personal-id">
+                
+                <div class="form-group">
+                    <label for="personal-nombre">Nombre Completo</label>
+                    <input type="text" id="personal-nombre" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="personal-telefono">Teléfono</label>
+                    <input type="text" id="personal-telefono">
+                </div>
+                
+                <div class="form-group">
+                    <label for="personal-email">Email</label>
+                    <input type="email" id="personal-email">
+                </div>
+                
+                <div class="form-group file-upload-group">
+                    <label for="personal-foto-file">Foto</label>
+                    <div class="file-upload-container">
+                        <input type="file" id="personal-foto-file" accept="image/*" class="file-input" style="display: none;">
+                        <label for="personal-foto-file" class="file-upload-label">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                <polyline points="17 8 12 3 7 8"/>
+                                <line x1="12" y1="3" x2="12" y2="15"/>
+                            </svg>
+                            <span>Seleccionar imagen</span>
+                        </label>
+                        <div class="file-preview" id="personal-foto-preview" style="display: none;">
+                            <img id="personal-foto-preview-img" alt="Vista previa">
+                            <button type="button" class="btn-remove-image" id="btn-remove-image">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M18 6l-12 12"/>
+                                    <path d="M6 6l12 12"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <p class="file-help">Formatos: JPG, PNG, GIF. Tamaño máximo: 2MB</p>
+                    <input type="hidden" id="personal-foto-url">
+                </div>
+
+                <div class="form-group">
+                    <label for="personal-duracion">Duración base del turno (minutos)</label>
+                    <input type="number" id="personal-duracion" min="30" value="30" step="30">
+                </div>
+                
+                <div class="form-group categorias-group">
+                    <label>Categorías</label>
+                    <div id="personal-categorias-checkboxes" class="categorias-checkboxes-container">
+                        <!-- Los checkboxes se generarán aquí dinámicamente -->
+                    </div>
+                </div>
+                
+                <div id="horario-laboral" class="horario-laboral-container">
+                    <h3>Horario Laboral</h3>
+                    <!-- Lunes -->
+                    <div class="dia-horario">
+                        <div class="dia-header">
+                            <label class="checkbox-categoria-label">
+                                <input type="checkbox" id="personal-lunes-activo" class="dia-activo checkbox-categoria" checked>
+                                <span class="checkbox-custom"></span>
+                                <span class="checkbox-text">Lunes</span>
+                            </label>
+                        </div>
+                        <div class="dia-campos">
+                            <input type="time" id="personal-lunes-inicio" value="09:00" class="time-input">
+                            <span class="time-separator">a</span>
+                            <input type="time" id="personal-lunes-fin" value="18:00" class="time-input">
+                        </div>
+                    </div>
+                    
+                    <!-- Martes -->
+                    <div class="dia-horario">
+                        <div class="dia-header">
+                            <label class="checkbox-categoria-label">
+                                <input type="checkbox" id="personal-martes-activo" class="dia-activo checkbox-categoria" checked>
+                                <span class="checkbox-custom"></span>
+                                <span class="checkbox-text">Martes</span>
+                            </label>
+                        </div>
+                        <div class="dia-campos">
+                            <input type="time" id="personal-martes-inicio" value="09:00" class="time-input">
+                            <span class="time-separator">a</span>
+                            <input type="time" id="personal-martes-fin" value="18:00" class="time-input">
+                        </div>
+                    </div>
+                    
+                    <!-- Miércoles -->
+                    <div class="dia-horario">
+                        <div class="dia-header">
+                            <label class="checkbox-categoria-label">
+                                <input type="checkbox" id="personal-miercoles-activo" class="dia-activo checkbox-categoria" checked>
+                                <span class="checkbox-custom"></span>
+                                <span class="checkbox-text">Miércoles</span>
+                            </label>
+                        </div>
+                        <div class="dia-campos">
+                            <input type="time" id="personal-miercoles-inicio" value="09:00" class="time-input">
+                            <span class="time-separator">a</span>
+                            <input type="time" id="personal-miercoles-fin" value="18:00" class="time-input">
+                        </div>
+                    </div>
+                    
+                    <!-- Jueves -->
+                    <div class="dia-horario">
+                        <div class="dia-header">
+                            <label class="checkbox-categoria-label">
+                                <input type="checkbox" id="personal-jueves-activo" class="dia-activo checkbox-categoria" checked>
+                                <span class="checkbox-custom"></span>
+                                <span class="checkbox-text">Jueves</span>
+                            </label>
+                        </div>
+                        <div class="dia-campos">
+                            <input type="time" id="personal-jueves-inicio" value="09:00" class="time-input">
+                            <span class="time-separator">a</span>
+                            <input type="time" id="personal-jueves-fin" value="18:00" class="time-input">
+                        </div>
+                    </div>
+                    
+                    <!-- Viernes -->
+                    <div class="dia-horario">
+                        <div class="dia-header">
+                            <label class="checkbox-categoria-label">
+                                <input type="checkbox" id="personal-viernes-activo" class="dia-activo checkbox-categoria" checked>
+                                <span class="checkbox-custom"></span>
+                                <span class="checkbox-text">Viernes</span>
+                            </label>
+                        </div>
+                        <div class="dia-campos">
+                            <input type="time" id="personal-viernes-inicio" value="09:00" class="time-input">
+                            <span class="time-separator">a</span>
+                            <input type="time" id="personal-viernes-fin" value="18:00" class="time-input">
+                        </div>
+                    </div>
+                    
+                    <!-- Sábado -->
+                    <div class="dia-horario">
+                        <div class="dia-header">
+                            <label class="checkbox-categoria-label">
+                                <input type="checkbox" id="personal-sabado-activo" class="dia-activo checkbox-categoria">
+                                <span class="checkbox-custom"></span>
+                                <span class="checkbox-text">Sábado</span>
+                            </label>
+                        </div>
+                        <div class="dia-campos">
+                            <input type="time" id="personal-sabado-inicio" value="09:00" class="time-input">
+                            <span class="time-separator">a</span>
+                            <input type="time" id="personal-sabado-fin" value="18:00" class="time-input">
+                        </div>
+                    </div>
+                    
+                    <!-- Domingo -->
+                    <div class="dia-horario">
+                        <div class="dia-header">
+                            <label class="checkbox-categoria-label">
+                                <input type="checkbox" id="personal-domingo-activo" class="dia-activo checkbox-categoria">
+                                <span class="checkbox-custom"></span>
+                                <span class="checkbox-text">Domingo</span>
+                            </label>
+                        </div>
+                        <div class="dia-campos">
+                            <input type="time" id="personal-domingo-inicio" value="09:00" class="time-input">
+                            <span class="time-separator">a</span>
+                            <input type="time" id="personal-domingo-fin" value="18:00" class="time-input">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="checkbox-wrapper-44 form-group form-group-checkbox">
+                    <label class="toggleButton" for="personal-activo">
+                        Activo: 
+                        <input type="checkbox" id="personal-activo" checked>
+                        <div>
+                            <svg viewBox="0 0 44 44">
+                                <path d="M14,24 L21,31 L39.7428882,11.5937758 C35.2809627,6.53125861 30.0333333,4 24,4 C12.95,4 4,12.95 4,24 C4,35.05 12.95,44 24,44 C35.05,44 44,35.05 44,24 C44,19.3 42.5809627,15.1645919 39.7428882,11.5937758" transform="translate(-2.000000, -2.000000)"></path>
+                            </svg>
+                        </div>
+                    </label>
+                </div>
+                
+                <button type="submit" class="btn-guardar">Guardar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- FullCalendar JS -->
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales/es.js'></script>
+    <script src="js/bundle.min.js"></script>
+</body>
+</html>

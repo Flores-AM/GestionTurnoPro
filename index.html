@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sistema de reserva de turnos online para tu negocio. Agenda fácil y rápido.">
+    <meta name="keywords" content="turnos, reservas, agenda online, gestion, Tigre, General Pacheco, El Talar, Talar">
+    <meta name="Agustin Matias F" content="GestionTurno">
+    <title>DemoPro 1.6 - GestiónTurno</title>
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=League+Spartan:wght@100..900&family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&family=Pacifico&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <!-- Agrega Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-functions.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+    <header class="cd-header">
+        <div class="header-wrapper">
+            <div class="nav-but-wrap">
+                <div class="menu-icon hover-target">
+                    <span class="menu-icon__line menu-icon__line-left"></span>
+                    <span class="menu-icon__line"></span>
+                    <span class="menu-icon__line menu-icon__line-right"></span>
+                </div>					
+            </div>					
+        </div>
+    </header>
+
+    <div class="nav">
+        <div class="nav__content">
+            <ul class="nav__list">
+                <li class="nav__list-item nav-item-no-auth" id="menu-auth-container">
+                    <a href="" class="hover-target target" id="btn-google-menu">
+                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20" height="20" viewBox="0 0 48 48">
+                        <path fill="#fbc02d" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12	s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20	s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"></path><path fill="#e53935" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039	l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"></path><path fill="#4caf50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36	c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"></path><path fill="#1565c0" d="M43.611,20.083L43.595,20L42,20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571	c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"></path>
+                        </svg>
+                        <span>Iniciar sesión</span>
+                    </a>
+                </li>
+
+                <li class="nav__list-item nav-item-auth" style="display: none;">
+                    <a class="hover-target target menu" id="nav-perfil">
+                        <div class="caracteristica-menu">
+                            <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="#FFFFFF"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            >
+                            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                            <path d="M12 10m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
+                            <path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855" />
+                            </svg>
+                            <span>Perfil</span>
+                        </div>
+                        <div class="submenu">
+                            <ul>
+                                <li><p id="usuario-nombre">Nombre usuario</p></li>
+                                <li><p id="usuario-email">Email usuario</p></li>
+                            </ul>
+                        </div>
+                    </a>
+                </li>
+
+                <li class="nav__list-item nav-item-auth" style="display: none;">
+                    <a class="hover-target target menu" id="nav-mis-turnos">
+                        <div class="caracteristica-menu">
+                            <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="#FFFFFF"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            >
+                            <path d="M10.5 21h-4.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v3" />
+                            <path d="M16 3v4" />
+                            <path d="M8 3v4" />
+                            <path d="M4 11h10" />
+                            <path d="M18 18m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+                            <path d="M18 16.5v1.5l.5 .5" />
+                            </svg>
+                            <span>Mis turnos</span>
+                        </div>
+                        <div class="submenu submenu-turnos">
+                            <ul>
+                                <li><p>fecha del turno</p></li>
+                                <li><p>horario del turno</p></li>
+                                <li><p>Total a abonar</p></li>
+                            </ul>
+                        </div>
+                    </a>
+                </li>
+
+                <li class="nav__list-item">
+                    <a class="hover-target target menu">
+                        <div class="caracteristica-menu">
+                            <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="#FFFFFF"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            >
+                            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                            <path d="M12 17l0 .01" />
+                            <path d="M12 13.5a1.5 1.5 0 0 1 1 -1.5a2.6 2.6 0 1 0 -3 -4" />
+                            </svg>
+                            <span>Preguntas</span>
+                        </div>
+                        <div class="submenu">
+                            <ul class="preguntas-frecuentes">
+                                <li class="pregunta-item">
+                                    <p class="pregunta">¿Cómo cancelo un turno?</p>
+                                    <p class="respuesta">Sí, podes cancelar tu turno contactándonos con 24hs de anticipación.</p>
+                                </li>
+                                <li class="pregunta-item">
+                                    <p class="pregunta">¿Qué métodos de pago aceptan?</p>
+                                    <p class="respuesta">Podes abonar con efectivo o transferencia en el local.</p>
+                                </li>
+                                <li class="pregunta-item">
+                                    <p class="pregunta">¿Puedo cambiar la fecha?</p>
+                                    <p class="respuesta">Sí, podés reprogramar tu turno contactándonos con 24hs de anticipación.</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </a>
+                </li>
+
+                <li class="nav__list-item">
+                    <a class="hover-target target menu">
+                        <div class="caracteristica-menu">
+                            <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="#FFFFFF"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            >
+                            <path d="M15 10l-4 4l6 6l4 -16l-18 7l4 2l2 6l3 -4" />
+                            </svg>
+                            <span>Contacto</span>
+                        </div>
+                        <div class="submenu">
+                            <ul>
+                                <li><p id="menu-direccion">Calle del local 123</p></li>
+                                <li><p id="menu-telefono">1234567890</p></li>
+                                <li><p id="menu-email">contacto@email.com</p></li>
+                            </ul>
+                        </div>
+                    </a>
+                </li>
+
+                <li class="nav__list-item btn-admin" style="display: none;">
+                    <a href="admin.html" class="hover-target target">
+                        <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="#FFFFFF"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        >
+                        <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z" />
+                        <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+                        </svg>
+                        <span>Admin</span>
+                    </a>
+                </li>
+                
+                <li class="nav__list-item nav-item-auth" style="display: none;">
+                    <a href="" class="hover-target target" id="nav-cerrar-sesion">
+                        <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="#d83c3c"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        >
+                        <path d="M7 6a7.75 7.75 0 1 0 10 0" />
+                        <path d="M12 4l0 8" />
+                        </svg>
+                        <span>Cerrar sesión</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <nav>
+        <h1 class="logo">Gestión<span>Turno</span></h1>
+
+        <div id="auth-container">
+            <button id="btn-google" class="google-btn">
+                <!-- <svg class="google-icon" viewBox="0 0 24 24" width="18" height="18">
+                    <path d="M12.545 10.239v3.821h5.445c-0.712 2.315-2.647 3.972-5.445 3.972-3.332 0-6.033-2.701-6.033-6.032s2.701-6.032 6.033-6.032c1.498 0 2.866 0.549 3.921 1.453l2.814-2.814c-1.784-1.664-4.152-2.675-6.735-2.675-5.522 0-10 4.479-10 10s4.478 10 10 10c8.396 0 10-7.496 10-10 0-0.671-0.068-1.325-0.182-1.977h-9.818z"/>
+                </svg> -->
+                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="22" height="22" viewBox="0 0 48 48">
+                    <path fill="#fbc02d" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12	s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20	s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"></path><path fill="#e53935" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039	l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"></path><path fill="#4caf50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36	c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"></path><path fill="#1565c0" d="M43.611,20.083L43.595,20L42,20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571	c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"></path>
+                </svg>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <div class="contenedor-maqueta">
+        <div class="barra-progreso">
+            <div class="progreso" id="progreso"></div>
+        </div>
+    
+        <div class="alineador">
+            <div class="resumen-continuo" style="display: none;">
+                <!-- <div class="resumen-header">
+                    <h3>Resumen de tu turno</h3>
+                </div> -->
+                <div class="resumen-content">
+                    <div class="resumen-especialistas" style="display: none;">
+                        <div class="especialistas-resumen"></div>
+                    </div>
+                    
+                    <div class="resumen-servicios">
+                        <div class="servicios-lista"></div>
+                        <div class="servicios-totales">
+                            <p class="duracion-total">
+                                <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="18"
+                                height="18"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="#000000"
+                                stroke-width="1.5"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                >
+                                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                                <path d="M12 12l3 -2" />
+                                <path d="M12 7v5" />
+                                </svg>
+                                <span id="resumen-duracion">0 min</span></p>
+                            <p class="precio-total">
+                                <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="18"
+                                height="18"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="#000000"
+                                stroke-width="1.5"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                >
+                                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                                <path d="M14.8 9a2 2 0 0 0 -1.8 -1h-2a2 2 0 1 0 0 4h2a2 2 0 1 1 0 4h-2a2 2 0 0 1 -1.8 -1" />
+                                <path d="M12 7v10" />
+                                </svg>
+                                <span id="resumen-precio">$0</span>
+                            </p>
+                            <p class="precio-senia">
+                                <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="18"
+                                height="18"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="#000000"
+                                stroke-width="1.5"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                >
+                                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                                <path d="M14.8 9a2 2 0 0 0 -1.8 -1h-2a2 2 0 1 0 0 4h2a2 2 0 1 1 0 4h-2a2 2 0 0 1 -1.8 -1" />
+                                <path d="M12 7v10" />
+                                </svg>
+                                <span id="resumen-senia">$0</span>
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="resumen-fecha-hora" style="display: none;">
+                    <p id="resumen-fecha"></p>
+                    <p id="resumen-hora"></p>
+                    </div>
+                    
+                    <div class="resumen-cliente" style="display: none;">
+                    <p id="resumen-nombre"></p>
+                    <p id="resumen-telefono"></p>
+                    </div>
+                </div>
+                
+                <!-- <div class="resumen-actions" style="display: none;">
+                    <button class="btn-reservar-final">Reservar ahora</button>
+                </div> -->
+            </div>
+
+            <!-- Contenedor principal de pasos -->
+            <main class="contenedor contenedor-pasos">
+                <section class="paso paso-1 activo">
+                    <!-- <h2 class="titulo">Servicios</h2> -->
+                    <p class="subtitulo">Selecciona uno o más <span>servicios</span>
+                    </p>
+                    <p class="error-mensaje" id="error-servicio">¡Selecciona al menos un servicio!</p>
+        
+                    <div class="contenedor-servicios contenedor-contenido">
+                        <div class="flotante servicio" data-servicio="Corte">
+                            <!-- <p class="p1">Corte</p> -->
+                            <p class="detalles-servicio">
+                                <!-- <span>$15.000</span> -->
+                                <!-- <span>30 minutos</span> -->
+                            </p>
+                            <svg class="check-icon" viewBox="0 0 24 24">
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                            </svg>
+                        </div>
+                    </div>
+        
+                    <!-- <p class="info-seleccion subtitulo">Seleccionados: <span id="contador-servicios">0</span></p> -->
+                </section>
+    
+                <!-- Paso 2: Especialistas (NUEVO) -->
+                <section class="paso paso-2">
+                    <!-- <h2 class="titulo">Especialista</h2> -->
+                    <p class="subtitulo">¿Con quién te gustaría <span>agendar</span>?</p>
+                    <p class="error-mensaje" id="error-especialista">¡Selecciona un especialista!</p>
+    
+                    <div class="contenedor-especialistas">
+                        <!-- Las categorías con servicios seleccionados se generarán aquí -->
+                    </div>
+    
+                    <p class="sin-especialistas" style="display: none;">
+                        No hay especialistas disponibles para los servicios seleccionados
+                    </p>
+                </section>
+                
+                <section class="paso paso-3">
+                    <div class="seccion-fechas">
+                        <!-- <h2 class="titulo">Fechas</h2>
+                        <p class="subtitulo">Selecciona una fecha disponible</p> -->
+                        <p class="error-mensaje" id="error-fecha">¡Selecciona una fecha!</p>
+                        
+                        <div class="cargando-fechas">
+                            <span class="loader"></span>
+                        </div>
+                        
+                        <div class="contenedor-calendario">
+                            <div class="calendario-header">
+                                <h3 class="calendario-mes"></h3>
+
+                                <div class="calendario-buttons">
+                                    <button class="btn-calendario-prev">
+                                        <svg viewBox="0 0 24 24" width="20" height="20">
+                                            <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/>
+                                        </svg>
+                                    </button>
+                                    <button class="btn-calendario-next">
+                                        <svg viewBox="0 0 24 24" width="20" height="20">
+                                            <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="calendario-dias-semana">
+                                <div>Dom</div><div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div>
+                            </div>
+                            
+                            <div class="calendario-dias"></div>
+                        </div>
+                        
+                        <p class="sin-fechas" style="display: none;">
+                            No hay fechas disponibles en este momento
+                        </p>
+                    </div>
+                    
+                    <div class="seccion-horarios">
+                        <!-- <h2 class="titulo">Horarios</h2> -->
+                        <p class="subtitulo subtitulo-horarios"><span></span></p>
+                        <p class="error-mensaje" id="error-horario">¡Selecciona un horario!</p>
+                        
+                        <div class="cargando-horarios" style="display: none;">
+                            <span class="loader"></span>
+                        </div>
+                        
+                        <div class="contenedor-horarios">
+                            <!-- Los horarios se generarán aquí -->
+                        </div>
+                        
+                        <p class="sin-horarios" style="display: none;">
+                            No hay horarios disponibles para esta fecha
+                        </p>
+                    </div>
+                </section>
+        
+                <!-- <section class="paso paso-4">
+                </section> -->
+        
+                <!-- Paso 4: Datos del Cliente -->
+                <section class="paso paso-4">
+                    <!-- <h2 class="titulo">Tus datos</h2> -->
+                    <p class="subtitulo">Completa para <span>finalizar</span></p>
+        
+                    <p class="error-mensaje" id="error-nombre">¡El nombre debe tener al menos 5 caracteres!</p>
+                    <p class="error-mensaje" id="error-email">¡Ingresa un email valido!</p>
+                    <p class="error-mensaje" id="error-telefono">¡El teléfono debe tener 10 números!</p>
+                    
+                    <form id="form-cliente" class="form-datos">
+                        <div class="grupo-form">
+                          <input class="input-floating" type="text" id="nombre" minlength="5" placeholder=" " required>
+                          <label for="nombre">Nombre completo</label>
+                          <small class="small-mensaje">Mínimo 5 letras</small>
+                        </div>
+        
+                        <div class="grupo-form">
+                            <input class="input-floating" type="email" id="email" placeholder=" " required>
+                            <label for="email">Email</label>
+                            <small class="small-mensaje">Ejemplo: usuario@dominio.com</small>
+                        </div>
+        
+                        <!-- Teléfono (exactamente 10 números) -->
+                        <div class="grupo-form">
+                            <input class="input-floating" type="tel" id="telefono" pattern="[0-9]{10}" placeholder=" " oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
+                            <label for="telefono">Teléfono</label>
+                            <small class="small-mensaje">10 números sin espacios</small>
+                        </div>
+                        
+                        <!-- Observaciones (Opcional) -->
+                        <div class="grupo-form">
+                            <textarea 
+                                class="input-floating" id="observacion" rows="3" placeholder=" "></textarea>
+                            <label for="observacion">Observaciones (opcional)</label>
+                        </div>
+                    </form>
+                </section>
+        
+                <!-- Paso 5: Resumen (antes paso 4) -->
+                <section class="paso paso-5">
+                    <p class="subtitulo">Genial <span id="cliente-nombre">nombre cliente</span></p>
+
+                    <div class="resumen">
+                        <div class="descripcion-turno">
+                            Nos contactaremos a <span>+540<span id="cliente-telefono">Teléfono ingresado</span></span> o <span id="cliente-email">Email ingresado</span> de ser necesario.
+                        </div>
+
+                        <div class="descripcion-contacto">
+                            <legend>Encontranos <span>en</span>:</legend>
+
+                            <div class="caja-contacto-resumen">
+                                <div class="caja-direccion">
+                                    <p>
+                                        <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="18"
+                                        height="18"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="#000000"
+                                        stroke-width="1.5"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        >
+                                        <path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+                                        <path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z" />
+                                        </svg>
+                                        <span id="local-direccion" class="direccion-con-mapa">Direccion del local</span>
+                                    </p>
+
+                                    <p>
+                                        <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="18"
+                                        height="18"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="#000000"
+                                        stroke-width="1.5"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        >
+                                        <path d="M20.971 11.278a9 9 0 1 0 -8.313 9.698" />
+                                        <path d="M12 7v5l1.5 1.5" />
+                                        <path d="M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879z" />
+                                        <path d="M19 18v.01" />
+                                        </svg>
+                                        <span id="local-atencion">Atencion al cliente</span>
+                                    </p>
+        
+                                    <p>
+                                        <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="18"
+                                        height="18"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="#000000"
+                                        stroke-width="1.5"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        >
+                                        <path d="M11 3h10v8h-3l-4 2v-2h-3z" />
+                                        <path d="M15 16v4a1 1 0 0 1 -1 1h-8a1 1 0 0 1 -1 -1v-14a1 1 0 0 1 1 -1h2" />
+                                        <path d="M10 18v.01" />
+                                        </svg>
+                                        <span id="local-telefono">Telefono del local</span>
+                                    </p>
+        
+                                    <p>
+                                        <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="18"
+                                        height="18"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="#000000"
+                                        stroke-width="1.5"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        >
+                                        <path d="M12 18h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v7.5" />
+                                        <path d="M3 6l9 6l9 -6" />
+                                        <path d="M15 18h6" />
+                                        <path d="M18 15l3 3l-3 3" />
+                                        </svg>
+                                        <span id="local-email">Email del local</span>
+                                    </p>
+                                </div>
+    
+                                <div class="redes">
+                                    <a href="[direccion de la red social]" id="instagram">
+                                        <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="18"
+                                        height="18"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="#000000"
+                                        stroke-width="1.5"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        >
+                                        <path d="M4 4m0 4a4 4 0 0 1 4 -4h8a4 4 0 0 1 4 4v8a4 4 0 0 1 -4 4h-8a4 4 0 0 1 -4 -4z" />
+                                        <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
+                                        <path d="M16.5 7.5l0 .01" />
+                                        </svg>
+                                    </a>
+    
+                                    <a href="[dirrecion de la red social]" id="equis">
+                                        <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="18"
+                                        height="18"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="#000000"
+                                        stroke-width="1.5"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        >
+                                        <path d="M4 4l11.733 16h4.267l-11.733 -16z" />
+                                        <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" />
+                                        </svg>
+                                    </a>
+    
+                                    <a href="[dirrecion de la red social]" id="whatsapp">
+                                        <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="18"
+                                        height="18"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="#000000"
+                                        stroke-width="1.5"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        >
+                                        <path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9" />
+                                        <path d="M9 10a.5 .5 0 0 0 1 0v-1a.5 .5 0 0 0 -1 0v1a5 5 0 0 0 5 5h1a.5 .5 0 0 0 0 -1h-1a.5 .5 0 0 0 0 1" />
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="error-mensaje" id="error-reserva" style="display: none;">Error al reservar, intenta nuevamente en unos segundos.</p>
+                </section>
+        
+                <!-- Paso 6: Confirmación/Error -->
+                <section class="paso paso-6">
+                    <div class="exito"></div>
+                    <div class="error"></div>
+                </section>
+            </main>
+        </div>
+    
+        <!-- Botones de navegación -->
+        <div class="controles">
+            <button class="btn-anterior">
+                <svg class="flecha" viewBox="0 0 24 24" width="24" height="24">
+                    <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z" fill="ffffff"/>
+                </svg>
+            </button>
+            
+            <button class="btn-siguiente">
+                <svg class="flecha" viewBox="0 0 24 24" width="24" height="24">
+                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" fill="ffffff"/>
+                </svg>
+            </button>
+            <span class="loader" id="reserva-loader" style="display: none;"></span>
+        </div>
+    </div>
+
+    <script src="js/bundle.min.js"></script>
+</body>
+</html>
