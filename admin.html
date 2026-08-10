@@ -16,6 +16,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-storage-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-functions-compat.js"></script>
 </head>
 <body class="body-admin">
     <div id="auth-container">
@@ -102,6 +103,57 @@
                     </span>
                     <span class="nav-enlace-texto">Personal</span>
                 </div>
+
+                <div class="nav-enlace">
+                    <span>
+                        <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="#020202"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        >
+                        <path d="M3 21l18 0" />
+                        <path d="M9 8l1 0" />
+                        <path d="M9 12l1 0" />
+                        <path d="M9 16l1 0" />
+                        <path d="M14 8l1 0" />
+                        <path d="M14 12l1 0" />
+                        <path d="M14 16l1 0" />
+                        <path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16" />
+                        </svg>
+                    </span>
+                    <span class="nav-enlace-texto">Mi Negocio</span>
+                </div>
+
+                <div class="nav-enlace" id="nav-enlace-negocios" style="display: none;">
+                    <span>
+                        <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="#020202"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        >
+                        <path d="M3 21l18 0" />
+                        <path d="M5 21v-14l8 -4v18" />
+                        <path d="M19 21v-10l-6 -4" />
+                        <path d="M9 9l0 .01" />
+                        <path d="M9 12l0 .01" />
+                        <path d="M9 15l0 .01" />
+                        <path d="M9 18l0 .01" />
+                        </svg>
+                    </span>
+                    <span class="nav-enlace-texto">Negocios</span>
+                </div>
             </div>
 
             <button id="logout-btn" class="google-btn">
@@ -128,25 +180,45 @@
         <div class="admin-container_servicios admin-container">
             <div class="admin-header admin-header-servicios">
                 <h2><span></span>Servicios</h2>
-                <button id="btn-agregar-servicio" class="btn-agregar">
-                    <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="#020202"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    >
-                    <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
-                    <path d="M13.5 6.5l4 4" />
-                    <path d="M16 19h6" />
-                    <path d="M19 16v6" />
-                    </svg>
-                    <span>Crear Servicio</span>
-                </button>
+                <div class="admin-header-acciones">
+                    <button id="btn-gestionar-categorias" class="btn-agregar btn-secundario">
+                        <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="#020202"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        >
+                        <path d="M4 6h16" />
+                        <path d="M4 12h16" />
+                        <path d="M4 18h16" />
+                        </svg>
+                        <span>Categorías</span>
+                    </button>
+                    <button id="btn-agregar-servicio" class="btn-agregar">
+                        <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="#020202"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        >
+                        <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+                        <path d="M13.5 6.5l4 4" />
+                        <path d="M16 19h6" />
+                        <path d="M19 16v6" />
+                        </svg>
+                        <span>Crear Servicio</span>
+                    </button>
+                </div>
             </div>
 
             <div id="servicios-list" class="servicios-list admin-list">
@@ -545,6 +617,131 @@
                 <!-- Resto del Personal -->
             </div>
         </div>
+
+        <div class="admin-container_mi-negocio admin-container">
+            <div class="admin-header admin-header-mi-negocio">
+                <h2><span></span>Mi Negocio</h2>
+            </div>
+
+            <form id="form-mi-negocio" class="form-mi-negocio" autocomplete="new-password">
+                <div class="form-group file-upload-group">
+                    <label for="negocio-logo-file">Foto / logo del negocio</label>
+                    <div class="file-upload-container">
+                        <input type="file" id="negocio-logo-file" accept="image/*" class="file-input" style="display: none;">
+                        <label for="negocio-logo-file" class="file-upload-label">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                <polyline points="17 8 12 3 7 8"/>
+                                <line x1="12" y1="3" x2="12" y2="15"/>
+                            </svg>
+                            <span>Seleccionar imagen</span>
+                        </label>
+                        <div class="file-preview" id="negocio-logo-preview" style="display: none;">
+                            <img id="negocio-logo-preview-img" alt="Vista previa">
+                            <button type="button" class="btn-remove-image" id="btn-remove-negocio-logo">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M18 6l-12 12"/>
+                                    <path d="M6 6l12 12"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <p class="file-help">Formatos: JPG, PNG, WEBP. Tamaño máximo: 2MB</p>
+                    <input type="hidden" id="negocio-logo-url">
+                </div>
+
+                <div class="form-group">
+                    <label for="mi-negocio-telefono">Teléfono</label>
+                    <input type="text" id="mi-negocio-telefono" placeholder="1122334455" autocomplete="new-password">
+                </div>
+
+                <div class="form-group">
+                    <label for="mi-negocio-direccion">Dirección</label>
+                    <input type="text" id="mi-negocio-direccion" placeholder="Av. Ejemplo 123" autocomplete="new-password">
+                </div>
+
+                <div class="form-group">
+                    <label for="mi-negocio-email">Email *</label>
+                    <input type="email" id="mi-negocio-email" placeholder="contacto@tunegocio.com" autocomplete="new-password" required>
+                    <span class="ayuda-form">A este email llegan los avisos de nuevas reservas y cancelaciones.</span>
+                </div>
+
+                <h3 class="subtitulo-mi-negocio">Redes sociales</h3>
+                <div class="form-group">
+                    <label for="mi-negocio-instagram">Instagram</label>
+                    <input type="text" id="mi-negocio-instagram" placeholder="https://instagram.com/tunegocio" autocomplete="new-password">
+                </div>
+                <div class="form-group">
+                    <label for="mi-negocio-facebook">Facebook</label>
+                    <input type="text" id="mi-negocio-facebook" placeholder="https://facebook.com/tunegocio" autocomplete="new-password">
+                </div>
+                <div class="form-group">
+                    <label for="mi-negocio-x">X (Twitter)</label>
+                    <input type="text" id="mi-negocio-x" placeholder="https://x.com/tunegocio" autocomplete="new-password">
+                </div>
+                <div class="form-group">
+                    <label for="mi-negocio-whatsapp">WhatsApp</label>
+                    <input type="text" id="mi-negocio-whatsapp" placeholder="https://wa.me/5491122334455" autocomplete="new-password">
+                </div>
+
+                <h3 class="subtitulo-mi-negocio">Días feriados / no laborables</h3>
+                <p class="ayuda-form">Agregá fechas puntuales en las que tu negocio no atiende (feriados, vacaciones, etc.), aunque ese día de la semana normalmente trabajes.</p>
+                <div class="feriados-agregar">
+                    <input type="date" id="mi-negocio-nuevo-feriado">
+                    <button type="button" id="btn-agregar-feriado" class="btn-agregar">Agregar</button>
+                </div>
+                <div id="feriados-list" class="feriados-list"></div>
+
+                <h3 class="subtitulo-mi-negocio">Ubicación en el mapa</h3>
+                <p class="ayuda-form">Hacé clic en el mapa para marcar la ubicación de tu negocio. Podés cambiarla cuando quieras.</p>
+                <div id="mi-negocio-mapa" class="mi-negocio-mapa"></div>
+
+                <button type="submit" class="btn-guardar" id="btn-guardar-mi-negocio">Guardar Cambios</button>
+                <div id="mi-negocio-estado" class="mi-negocio-estado"></div>
+            </form>
+        </div>
+
+        <div class="admin-container_negocios admin-container" id="admin-container-negocios" style="display: none;">
+            <div class="admin-header admin-header-negocios">
+                <h2><span></span>Negocios</h2>
+            </div>
+
+            <form id="form-alta-negocio" class="form-alta-negocio">
+                <div class="form-group">
+                    <label for="negocio-nombre">Nombre del negocio</label>
+                    <input type="text" id="negocio-nombre" required placeholder="Ej: Estética Bella Vista">
+                </div>
+
+                <div class="form-group">
+                    <label for="negocio-slug">Subdominio</label>
+                    <input type="text" id="negocio-slug" required placeholder="ej-nombre-negocio" pattern="[a-z0-9]([a-z0-9-]{1,61}[a-z0-9])?">
+                    <p class="ayuda-form">Solo minúsculas, números y guiones. Quedará como <strong><span id="negocio-slug-preview">subdominio</span>.gestionturno.com</strong></p>
+                </div>
+
+                <div class="form-group">
+                    <label for="negocio-owner-uid">UID del dueño (Firebase Auth)</label>
+                    <input type="text" id="negocio-owner-uid" required placeholder="UID de Firebase Authentication">
+                    <p class="ayuda-form">Se obtiene desde la consola de Firebase (Authentication → Users), una vez que la persona inició sesión con Google al menos una vez.</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="negocio-email">Email de contacto del negocio</label>
+                    <input type="email" id="negocio-email" required placeholder="contacto@tunegocio.com">
+                    <p class="ayuda-form">A este email llegan los avisos de nuevas reservas y cancelaciones de este negocio.</p>
+                </div>
+
+                <button type="submit" class="btn-guardar" id="btn-crear-negocio">
+                    <span>Crear Negocio</span>
+                </button>
+
+                <div id="alta-negocio-estado" class="alta-negocio-estado"></div>
+            </form>
+
+            <div class="negocios-existentes">
+                <h3>Negocios existentes</h3>
+                <div id="negocios-list" class="negocios-list"></div>
+            </div>
+        </div>
     </div>
 
     <!-- Modal para editar turno -->
@@ -719,9 +916,189 @@
                         </label>
                     </div>
                 </div>
-                
+
+                <div class="form-group" id="servicio-descuento-porcentaje-group" style="display:none;">
+                    <label for="servicio-descuento-porcentaje">Porcentaje de descuento</label>
+                    <select id="servicio-descuento-porcentaje">
+                        <option value="10">10%</option>
+                        <option value="15">15%</option>
+                        <option value="20">20%</option>
+                        <option value="25" selected>25%</option>
+                        <option value="30">30%</option>
+                        <option value="35">35%</option>
+                        <option value="40">40%</option>
+                        <option value="45">45%</option>
+                        <option value="50">50%</option>
+                    </select>
+                </div>
+
                 <button type="submit" class="btn-guardar">Guardar</button>
             </form>
+        </div>
+    </div>
+
+    <!-- Modal para Gestionar Categorías -->
+    <div id="modal-categorias" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Categorías</h2>
+
+            <div id="categorias-list" class="categorias-list"></div>
+
+            <form id="form-categoria" class="form-categoria">
+                <input type="hidden" id="categoria-id">
+                <div class="form-group">
+                    <label for="categoria-nombre">Nombre de la categoría</label>
+                    <input type="text" id="categoria-nombre" required placeholder="Ej: Masajes">
+                </div>
+                <div class="categoria-form-acciones">
+                    <button type="submit" class="btn-guardar" id="btn-guardar-categoria">Crear Categoría</button>
+                    <button type="button" class="btn-eliminar" id="btn-cancelar-edicion-categoria" style="display:none;">Cancelar edición</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de configuración total de un negocio (solo superadmin) -->
+    <div id="modal-config-negocio" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 id="config-negocio-titulo">Configuración</h2>
+
+            <form id="form-config-negocio" autocomplete="new-password">
+                <input type="hidden" id="config-negocio-slug">
+
+                <h3 class="subtitulo-mi-negocio">Datos generales</h3>
+                <div class="form-group">
+                    <label for="config-nombre">Nombre</label>
+                    <input type="text" id="config-nombre" autocomplete="new-password">
+                </div>
+                <div class="form-group">
+                    <label for="config-telefono">Teléfono</label>
+                    <input type="text" id="config-telefono" autocomplete="new-password">
+                </div>
+                <div class="form-group">
+                    <label for="config-direccion">Dirección</label>
+                    <input type="text" id="config-direccion" autocomplete="new-password">
+                </div>
+                <div class="form-group">
+                    <label for="config-email">Email *</label>
+                    <input type="email" id="config-email" autocomplete="new-password" required>
+                    <span class="ayuda-form">A este email llegan los avisos de nuevas reservas y cancelaciones.</span>
+                </div>
+
+                <h3 class="subtitulo-mi-negocio">Redes sociales</h3>
+                <div class="form-group">
+                    <label for="config-instagram">Instagram</label>
+                    <input type="text" id="config-instagram" autocomplete="new-password">
+                </div>
+                <div class="form-group">
+                    <label for="config-facebook">Facebook</label>
+                    <input type="text" id="config-facebook" autocomplete="new-password">
+                </div>
+                <div class="form-group">
+                    <label for="config-x">X (Twitter)</label>
+                    <input type="text" id="config-x" autocomplete="new-password">
+                </div>
+                <div class="form-group">
+                    <label for="config-whatsapp">WhatsApp</label>
+                    <input type="text" id="config-whatsapp" autocomplete="new-password">
+                </div>
+
+                <h3 class="subtitulo-mi-negocio">Operativo (solo superadmin)</h3>
+                <div class="config-horarios">
+                    <div class="form-group">
+                        <label for="config-horario-apertura">Horario de apertura</label>
+                        <input type="time" id="config-horario-apertura" step="3600">
+                    </div>
+                    <div class="form-group">
+                        <label for="config-horario-cierre">Horario de cierre</label>
+                        <input type="time" id="config-horario-cierre" step="3600">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Días laborales</label>
+                    <div class="config-dias-laborales">
+                        <label><input type="checkbox" class="config-dia-laboral" value="1"> Lun</label>
+                        <label><input type="checkbox" class="config-dia-laboral" value="2"> Mar</label>
+                        <label><input type="checkbox" class="config-dia-laboral" value="3"> Mié</label>
+                        <label><input type="checkbox" class="config-dia-laboral" value="4"> Jue</label>
+                        <label><input type="checkbox" class="config-dia-laboral" value="5"> Vie</label>
+                        <label><input type="checkbox" class="config-dia-laboral" value="6"> Sáb</label>
+                        <label><input type="checkbox" class="config-dia-laboral" value="7"> Dom</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="config-duracion-turno">Duración base del turno</label>
+                    <select id="config-duracion-turno">
+                        <option value="30">30 minutos</option>
+                        <option value="60">60 minutos</option>
+                        <option value="90">90 minutos</option>
+                        <option value="120">120 minutos</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="config-tipo-senia">Tipo de seña</label>
+                    <select id="config-tipo-senia">
+                        <option value="porTiempo">Por tiempo (monto por cada 30 min de duración)</option>
+                        <option value="porcentual">Porcentual (10% del valor total del turno)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="config-sena-minima">Seña mínima ($)</label>
+                    <input type="number" id="config-sena-minima" min="0" step="100">
+                    <p class="ayuda-form">En modo "Por tiempo" es el monto por cada 30 min. En modo "Porcentual" es el piso — nunca se cobra menos que esto, aunque el 10% dé menos.</p>
+                </div>
+
+                <div class="checkbox-wrapper-44 form-group form-group-checkbox">
+                    <label class="toggleButton" for="config-pago-online">
+                        Cobrar la seña online (Mercado Pago):
+                        <input type="checkbox" id="config-pago-online">
+                        <div>
+                            <svg viewBox="0 0 44 44">
+                                <path d="M14,24 L21,31 L39.7428882,11.5937758 C35.2809627,6.53125861 30.0333333,4 24,4 C12.95,4 4,12.95 4,24 C4,35.05 12.95,44 24,44 C35.05,44 44,35.05 44,24 C44,19.3 42.5809627,15.1645919 39.7428882,11.5937758" transform="translate(-2.000000, -2.000000)"></path>
+                            </svg>
+                        </div>
+                    </label>
+                    <p class="ayuda-form">Si está activo, el cliente paga la seña con Mercado Pago antes de que el turno quede confirmado (siempre a tu cuenta de la plataforma, nunca a la del negocio). Solo vos podés activarlo o desactivarlo, no el dueño del negocio desde su panel.</p>
+                    <p class="ayuda-form" id="config-pago-online-nota-demopro" style="display: none;"><strong>demopro nunca cobra de verdad</strong>, actives esto o no — activarlo acá solo sirve para probar el circuito de crédito por cancelación sin ningún cobro real.</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="config-max-dias-reserva">Máximo de días de reserva</label>
+                    <input type="number" id="config-max-dias-reserva" min="1" step="1">
+                </div>
+
+                <div class="form-group">
+                    <label for="config-anticipacion-minima">Anticipación mínima (minutos)</label>
+                    <input type="number" id="config-anticipacion-minima" min="0" step="5">
+                </div>
+
+                <button type="submit" class="btn-guardar" id="btn-guardar-config-negocio">Guardar Cambios</button>
+                <div id="config-negocio-estado" class="mi-negocio-estado"></div>
+            </form>
+
+            <div class="zona-peligro">
+                <h3 class="subtitulo-mi-negocio">Zona de peligro</h3>
+                <p class="ayuda-form">Eliminar un negocio borra TODO lo relacionado (subdominio, categorías, servicios, especialistas, turnos y bloqueos) de forma permanente. No se puede deshacer.</p>
+
+                <form id="form-eliminar-negocio" autocomplete="off">
+                    <div class="form-group">
+                        <label id="label-confirmar-slug" for="eliminar-negocio-slug-confirmacion">Escribí el slug para confirmar</label>
+                        <input type="text" id="eliminar-negocio-slug-confirmacion" autocomplete="new-password">
+                    </div>
+                    <div class="form-group">
+                        <label for="eliminar-negocio-clave">Clave de seguridad</label>
+                        <input type="password" id="eliminar-negocio-clave" autocomplete="new-password">
+                    </div>
+                    <button type="submit" class="btn-eliminar-negocio" id="btn-eliminar-negocio" disabled>Eliminar Negocio Definitivamente</button>
+                    <div id="eliminar-negocio-estado" class="mi-negocio-estado"></div>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -774,11 +1151,6 @@
                     <input type="hidden" id="personal-foto-url">
                 </div>
 
-                <div class="form-group">
-                    <label for="personal-duracion">Duración base del turno (minutos)</label>
-                    <input type="number" id="personal-duracion" min="30" value="30" step="30">
-                </div>
-                
                 <div class="form-group categorias-group">
                     <label>Categorías</label>
                     <div id="personal-categorias-checkboxes" class="categorias-checkboxes-container">
@@ -798,9 +1170,9 @@
                             </label>
                         </div>
                         <div class="dia-campos">
-                            <input type="time" id="personal-lunes-inicio" value="09:00" class="time-input">
+                            <input type="time" id="personal-lunes-inicio" value="09:00" class="time-input" step="3600">
                             <span class="time-separator">a</span>
-                            <input type="time" id="personal-lunes-fin" value="18:00" class="time-input">
+                            <input type="time" id="personal-lunes-fin" value="18:00" class="time-input" step="3600">
                         </div>
                     </div>
                     
@@ -814,9 +1186,9 @@
                             </label>
                         </div>
                         <div class="dia-campos">
-                            <input type="time" id="personal-martes-inicio" value="09:00" class="time-input">
+                            <input type="time" id="personal-martes-inicio" value="09:00" class="time-input" step="3600">
                             <span class="time-separator">a</span>
-                            <input type="time" id="personal-martes-fin" value="18:00" class="time-input">
+                            <input type="time" id="personal-martes-fin" value="18:00" class="time-input" step="3600">
                         </div>
                     </div>
                     
@@ -830,9 +1202,9 @@
                             </label>
                         </div>
                         <div class="dia-campos">
-                            <input type="time" id="personal-miercoles-inicio" value="09:00" class="time-input">
+                            <input type="time" id="personal-miercoles-inicio" value="09:00" class="time-input" step="3600">
                             <span class="time-separator">a</span>
-                            <input type="time" id="personal-miercoles-fin" value="18:00" class="time-input">
+                            <input type="time" id="personal-miercoles-fin" value="18:00" class="time-input" step="3600">
                         </div>
                     </div>
                     
@@ -846,9 +1218,9 @@
                             </label>
                         </div>
                         <div class="dia-campos">
-                            <input type="time" id="personal-jueves-inicio" value="09:00" class="time-input">
+                            <input type="time" id="personal-jueves-inicio" value="09:00" class="time-input" step="3600">
                             <span class="time-separator">a</span>
-                            <input type="time" id="personal-jueves-fin" value="18:00" class="time-input">
+                            <input type="time" id="personal-jueves-fin" value="18:00" class="time-input" step="3600">
                         </div>
                     </div>
                     
@@ -862,9 +1234,9 @@
                             </label>
                         </div>
                         <div class="dia-campos">
-                            <input type="time" id="personal-viernes-inicio" value="09:00" class="time-input">
+                            <input type="time" id="personal-viernes-inicio" value="09:00" class="time-input" step="3600">
                             <span class="time-separator">a</span>
-                            <input type="time" id="personal-viernes-fin" value="18:00" class="time-input">
+                            <input type="time" id="personal-viernes-fin" value="18:00" class="time-input" step="3600">
                         </div>
                     </div>
                     
@@ -878,9 +1250,9 @@
                             </label>
                         </div>
                         <div class="dia-campos">
-                            <input type="time" id="personal-sabado-inicio" value="09:00" class="time-input">
+                            <input type="time" id="personal-sabado-inicio" value="09:00" class="time-input" step="3600">
                             <span class="time-separator">a</span>
-                            <input type="time" id="personal-sabado-fin" value="18:00" class="time-input">
+                            <input type="time" id="personal-sabado-fin" value="18:00" class="time-input" step="3600">
                         </div>
                     </div>
                     
@@ -894,9 +1266,9 @@
                             </label>
                         </div>
                         <div class="dia-campos">
-                            <input type="time" id="personal-domingo-inicio" value="09:00" class="time-input">
+                            <input type="time" id="personal-domingo-inicio" value="09:00" class="time-input" step="3600">
                             <span class="time-separator">a</span>
-                            <input type="time" id="personal-domingo-fin" value="18:00" class="time-input">
+                            <input type="time" id="personal-domingo-fin" value="18:00" class="time-input" step="3600">
                         </div>
                     </div>
                 </div>
