@@ -656,15 +656,19 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="mi-negocio-direccion">Dirección</label>
-                    <input type="text" id="mi-negocio-direccion" placeholder="Av. Ejemplo 123" autocomplete="new-password">
-                </div>
-
-                <div class="form-group">
                     <label for="mi-negocio-email">Email *</label>
                     <input type="email" id="mi-negocio-email" placeholder="contacto@tunegocio.com" autocomplete="new-password" required>
                     <span class="ayuda-form">A este email llegan los avisos de nuevas reservas y cancelaciones.</span>
                 </div>
+
+                <div class="form-group">
+                    <label for="mi-negocio-direccion">Dirección</label>
+                    <input type="text" id="mi-negocio-direccion" placeholder="Av. Ejemplo 123" autocomplete="new-password">
+                </div>
+
+                <h3 class="subtitulo-mi-negocio">Ubicación en el mapa</h3>
+                <p class="ayuda-form">Hacé clic en el mapa para marcar la ubicación de tu negocio. Podés cambiarla cuando quieras.</p>
+                <div id="mi-negocio-mapa" class="mi-negocio-mapa"></div>
 
                 <h3 class="subtitulo-mi-negocio">Redes sociales</h3>
                 <div class="form-group">
@@ -691,10 +695,6 @@
                     <button type="button" id="btn-agregar-feriado" class="btn-agregar">Agregar</button>
                 </div>
                 <div id="feriados-list" class="feriados-list"></div>
-
-                <h3 class="subtitulo-mi-negocio">Ubicación en el mapa</h3>
-                <p class="ayuda-form">Hacé clic en el mapa para marcar la ubicación de tu negocio. Podés cambiarla cuando quieras.</p>
-                <div id="mi-negocio-mapa" class="mi-negocio-mapa"></div>
 
                 <button type="submit" class="btn-guardar" id="btn-guardar-mi-negocio">Guardar Cambios</button>
                 <div id="mi-negocio-estado" class="mi-negocio-estado"></div>
@@ -1293,6 +1293,6 @@
     <!-- FullCalendar JS -->
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales/es.js'></script>
-    <script src="js/bundle.min.js?v=a0f03dd071"></script>
+    <script src="js/bundle.min.js?v=633123a119"></script>
 </body>
 </html>
