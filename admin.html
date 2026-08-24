@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - GestiónTurno</title>
     <link rel="icon" type="image/png" href="img/logo-gestion.png">
-    <link rel="stylesheet" href="css/app.css?v=e1566de700">
+    <link rel="stylesheet" href="css/app.css?v=18e36d05b3">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=League+Spartan:wght@100..900&family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&family=Pacifico&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
@@ -1083,6 +1083,22 @@
                 <div id="config-negocio-estado" class="mi-negocio-estado"></div>
             </form>
 
+            <div class="zona-admins">
+                <h3 class="subtitulo-mi-negocio">Administradores</h3>
+                <p class="ayuda-form">Quiénes pueden entrar al panel de este negocio. Siempre tiene que quedar al menos uno — si el dueño pierde acceso a su cuenta, agregá primero la nueva antes de sacar la vieja.</p>
+                <ul id="config-admins-lista" class="lista-admins"></ul>
+
+                <form id="form-agregar-admin" autocomplete="off">
+                    <div class="form-group">
+                        <label for="nuevo-admin-identificador">Email o UID de la persona a agregar</label>
+                        <input type="text" id="nuevo-admin-identificador" autocomplete="new-password" placeholder="ejemplo@gmail.com">
+                        <p class="ayuda-form">Tiene que haber iniciado sesión con Google en el sitio al menos una vez antes de poder agregarla.</p>
+                    </div>
+                    <button type="submit" class="btn-guardar" id="btn-agregar-admin">Agregar administrador</button>
+                    <div id="admins-estado" class="mi-negocio-estado"></div>
+                </form>
+            </div>
+
             <div class="zona-peligro">
                 <h3 class="subtitulo-mi-negocio">Zona de peligro</h3>
                 <p class="ayuda-form">Eliminar un negocio borra TODO lo relacionado (subdominio, categorías, servicios, especialistas, turnos y bloqueos) de forma permanente. No se puede deshacer.</p>
@@ -1294,6 +1310,6 @@
     <!-- FullCalendar JS -->
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales/es.js'></script>
-    <script src="js/bundle.min.js?v=562f94ee55"></script>
+    <script src="js/bundle.min.js?v=702ab55b34"></script>
 </body>
 </html>
