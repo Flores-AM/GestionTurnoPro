@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - GestiónTurno</title>
     <link rel="icon" type="image/png" href="img/logo-gestion.png">
-    <link rel="stylesheet" href="css/app.css?v=18e36d05b3">
+    <link rel="stylesheet" href="css/app.css?v=561238a579">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=League+Spartan:wght@100..900&family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&family=Pacifico&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
@@ -1304,12 +1304,45 @@
                 
                 <button type="submit" class="btn-guardar">Guardar</button>
             </form>
+
+            <!-- Solo visible al editar un especialista ya existente (necesita
+                 su ID real para asociar los días libres). Fuera de
+                 #form-personal a propósito: es un <form> propio, para que
+                 Enter en sus campos no dispare el submit de "Guardar" del
+                 personal (mismo criterio que la zona de administradores en
+                 el modal de config de negocio). -->
+            <div id="personal-dias-libres" class="dias-libres-container" style="display: none;">
+                <h3>Días libres / Ausencias</h3>
+                <p class="ayuda-form">
+                    Para no afectar turnos ya reservados, solo se pueden cargar desde el
+                    <strong id="dias-libres-fecha-minima">-</strong> en adelante.
+                </p>
+
+                <ul id="dias-libres-lista" class="lista-dias-libres"></ul>
+
+                <form id="form-dias-libres">
+                    <div class="form-group">
+                        <label for="dias-libres-inicio">Desde</label>
+                        <input type="date" id="dias-libres-inicio" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="dias-libres-fin">Hasta</label>
+                        <input type="date" id="dias-libres-fin" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="dias-libres-motivo">Motivo (opcional)</label>
+                        <input type="text" id="dias-libres-motivo" placeholder="Ej: Vacaciones" maxlength="80">
+                    </div>
+                    <button type="submit" id="btn-agregar-dias-libres" class="btn-agregar-dia-libre">Agregar día libre</button>
+                </form>
+                <p id="dias-libres-estado" class="mi-negocio-estado"></p>
+            </div>
         </div>
     </div>
 
     <!-- FullCalendar JS -->
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales/es.js'></script>
-    <script src="js/bundle.min.js?v=8ec46bcb7e"></script>
+    <script src="js/bundle.min.js?v=adb2c85850"></script>
 </body>
 </html>
