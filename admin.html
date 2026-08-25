@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - GestiónTurno</title>
     <link rel="icon" type="image/png" href="img/logo-gestion.png">
-    <link rel="stylesheet" href="css/app.css?v=561238a579">
+    <link rel="stylesheet" href="css/app.css?v=5fafe259e8">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=League+Spartan:wght@100..900&family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&family=Pacifico&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
@@ -1337,12 +1337,50 @@
                 </form>
                 <p id="dias-libres-estado" class="mi-negocio-estado"></p>
             </div>
+
+            <!-- Ausencia de EMERGENCIA (a diferencia de "Días libres" de
+                 arriba, esta SÍ puede afectar turnos ya reservados — por eso
+                 primero busca y muestra cuáles antes de tocar nada). También
+                 fuera de #form-personal, mismo motivo que la de arriba. -->
+            <div id="personal-ausencia-emergencia" class="ausencia-emergencia-container" style="display: none;">
+                <h3>¿Emergencia? Ausencia inesperada</h3>
+                <p class="ayuda-form">
+                    Para faltas imprevistas (enfermedad, accidente, etc.). A diferencia de los días libres
+                    normales, esto puede afectar turnos ya reservados — te mostramos cuáles antes de confirmar nada,
+                    y cada uno que se cancele le deja al cliente un crédito completo por lo que pagó (no es
+                    responsabilidad suya).
+                </p>
+
+                <form id="form-buscar-turnos-afectados">
+                    <div class="form-group">
+                        <label for="emergencia-inicio">Desde</label>
+                        <input type="date" id="emergencia-inicio" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="emergencia-fin">Hasta</label>
+                        <input type="date" id="emergencia-fin" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="emergencia-motivo">Motivo (opcional)</label>
+                        <input type="text" id="emergencia-motivo" placeholder="Ej: Licencia médica" maxlength="80">
+                    </div>
+                    <button type="submit" id="btn-buscar-turnos-afectados" class="btn-buscar-emergencia">Buscar turnos afectados</button>
+                </form>
+
+                <div id="emergencia-resultado" style="display: none;">
+                    <p id="emergencia-resumen-turnos"></p>
+                    <ul id="emergencia-lista-turnos" class="lista-turnos-afectados"></ul>
+                    <button type="button" id="btn-confirmar-emergencia" class="btn-confirmar-emergencia">Confirmar ausencia de emergencia</button>
+                </div>
+
+                <p id="emergencia-estado" class="mi-negocio-estado"></p>
+            </div>
         </div>
     </div>
 
     <!-- FullCalendar JS -->
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales/es.js'></script>
-    <script src="js/bundle.min.js?v=adb2c85850"></script>
+    <script src="js/bundle.min.js?v=bef4fe7e79"></script>
 </body>
 </html>
